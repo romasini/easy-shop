@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>Список товаров</title>
+</head>
+<body>
+<div class = "container">
+    <div th:replace="~{navigation :: navigation(Products)}" />
+    <h1>Список товаров</h1>
+    <span th:if="${productlist.isEmpty()}">Список товаров пуст</span>
+    <table class="table" th:if="${!productlist.isEmpty()}">
+        <thead>
+        <tr style="background-color:grey">
+            <td>ID</td>
+            <td>Title</td>
+            <td>Price</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${productlist}">
+            <td th:text = "${p.id}"/>
+            <td th:text = "${p.title}"/>
+            <td th:text = "${p.price}"/>
+        </tr>
+        </tbody>
+    </table>
+
+    <form class="filter" method="GET" th:action="@{/products}">
+        <input name="minPrice" type="number" placeholder="Цена От">
+        <input name="maxPrice" type="number" placeholder="Цена До">
+        <button class="btn btn-primary" type="submit">Фильтровать</button>
+    </form>
+</div>
+</body>
+</html>
