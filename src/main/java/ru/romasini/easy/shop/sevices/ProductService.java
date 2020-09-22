@@ -21,17 +21,17 @@ public class ProductService {
         return productRepository.findAll(PageRequest.of(numPage, sizePage));
     }
 
-    public List<Product> findAllByPriceGreaterThanEqual(Integer numPage, int sizePage, int minPrice){
+    public Page<Product> findAllByPriceGreaterThanEqual(Integer numPage, int sizePage, int minPrice){
         Pageable page = PageRequest.of(numPage, sizePage);
         return productRepository.findAllByPriceGreaterThanEqual(minPrice, page);
     }
 
-    public List<Product> findAllByPriceLessThanEqual(Integer numPage, int sizePage, int maxPrice){
+    public Page<Product> findAllByPriceLessThanEqual(Integer numPage, int sizePage, int maxPrice){
         Pageable page = PageRequest.of(numPage, sizePage);
         return productRepository.findAllByPriceLessThanEqual(maxPrice, page);
     }
 
-    public List<Product> findAllByPriceGreaterThanEqualAndPriceLessThanEqual(Integer numPage, int sizePage, int minPrice, int maxPrice){
+    public Page<Product> findAllByPriceGreaterThanEqualAndPriceLessThanEqual(Integer numPage, int sizePage, int minPrice, int maxPrice){
         Pageable page = PageRequest.of(numPage, sizePage);
         return productRepository.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice, page);
     }

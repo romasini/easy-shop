@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
-    List<Product> findAllByPriceGreaterThanEqual(int minPrice, Pageable page);
-    List<Product> findAllByPriceLessThanEqual(int maxPrice, Pageable page);
-    List<Product> findAllByPriceGreaterThanEqualAndPriceLessThanEqual(int minPrice, int maxPrice, Pageable page);
+    Page<Product> findAllByPriceGreaterThanEqual(int minPrice, Pageable page);
+    Page<Product> findAllByPriceLessThanEqual(int maxPrice, Pageable page);
+    Page<Product> findAllByPriceGreaterThanEqualAndPriceLessThanEqual(int minPrice, int maxPrice, Pageable page);
 
 }
