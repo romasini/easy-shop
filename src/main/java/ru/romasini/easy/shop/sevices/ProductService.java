@@ -1,6 +1,10 @@
 package ru.romasini.easy.shop.sevices;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.romasini.easy.shop.models.Product;
 import ru.romasini.easy.shop.repositories.ProductRepository;
@@ -13,20 +17,23 @@ public class ProductService {
 
     private ProductRepository productRepository;
 
-    public List<Product> findAll(){
-        return productRepository.findAll();
+    public Page<Product> findAll(Integer numPage, int sizePage){
+        return productRepository.findAll(PageRequest.of(numPage, sizePage));
     }
 
-    public List<Product> findAllByPriceGreaterThanEqual(int minPrice){
-        return productRepository.findAllByPriceGreaterThanEqual(minPrice);
+    public List<Product> findAllByPriceGreaterThanEqual(Integer numPage, int sizePage, int minPrice){
+        Pageable page = PageRequest.of(numPage, sizePage);
+        return productRepository.findAllByPriceGreaterThanEqual(minPrice, page);
     }
 
-    public List<Product> findAllByPriceLessThanEqual(int maxPrice){
-        return productRepository.findAllByPriceLessThanEqual(maxPrice);
+    public List<Product> findAllByPriceLessThanEqual(Integer numPage, int sizePage, int maxPrice){
+        Pageable page = PageRequest.of(numPage, sizePage);
+        return productRepository.findAllByPriceLessThanEqual(maxPrice, page);
     }
 
-    public List<Product> findAllByPriceGreaterThanEqualAndPriceLessThanEqual(int minPrice, int maxPrice){
-        return productRepository.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
+    public List<Product> findAllByPriceGreaterThanEqualAndPriceLessThanEqual(Integer numPage, int sizePage, int minPrice, int maxPrice){
+        Pageable page = PageRequest.of(numPage, sizePage);
+        return productRepository.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice, page);
     }
 
 }
