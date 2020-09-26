@@ -5,12 +5,27 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <title th:text = "${'Продукт ' + product.title}"/>
+    <title th:text = "'Продукт ' + ${product.title}"/>
 </head>
 <body>
     <div class="container">
         <div th:replace="~{navigation :: navigation(Products)}" />
 
+        <form method="POST" class="product" th:action="@{/saveProduct}" th:object="${product}">
+            <div class="form-group">
+                <label for="productId">ID</label>
+                <input type="text" class="form-control" readonly id="productId" th:field="*{id}" name="id">
+            </div>
+            <div class="form-group">
+                <label for="productTitle">Название</label>
+                <input type="text" class="form-control" id="productTitle" th:field="*{title}" name="title">
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Цена</label>
+                <input type="number" class="form-control" id="productPrice" th:field="*{price}" name="price">
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
     </div>
 </body>
 </html>
