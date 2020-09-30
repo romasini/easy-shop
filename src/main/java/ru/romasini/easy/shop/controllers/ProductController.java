@@ -4,7 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.romasini.easy.shop.models.Product;
 import ru.romasini.easy.shop.sevices.ProductService;
+import ru.romasini.easy.shop.utils.ProductFilter;
+
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -14,22 +19,46 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public String index(Model model, @RequestParam(name = "p", required = false, defaultValue = "1") Integer numPage, @RequestParam(required = false, defaultValue = "0") int minPrice,  @RequestParam(required = false, defaultValue = "0") int maxPrice){
+    public String index(Model model,
+                        @RequestParam(name = "p", required = false, defaultValue = "1") Integer numPage,
+                        @RequestParam Map<String, String> params){
+
         if(numPage <= 0){
             numPage = 1;
         }
 
-        if (minPrice==0 && maxPrice==0){
-            model.addAttribute("productlist", productService.findAll(numPage - 1, PAGE_SIZE));
-        }else if(minPrice>0 && maxPrice>0){
-            model.addAttribute("productlist", productService.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(numPage - 1, PAGE_SIZE, minPrice, maxPrice));
-        }else if(minPrice>0){
-            model.addAttribute("productlist", productService.findAllByPriceGreaterThanEqual(numPage - 1, PAGE_SIZE, minPrice));
-        }else if(maxPrice>0){
-            model.addAttribute("productlist", productService.findAllByPriceLessThanEqual(numPage - 1, PAGE_SIZE, maxPrice));
-        }
+        ProductFilter productFilter = new ProductFilter(params);
+        model.addAttribute("products", productService.findAll(productFilter.getSpec(), numPage-1, PAGE_SIZE));
+        model.addAttribute("filterDefinition", productFilter.getFilterDefinition());
 
         return "products";
+    }
+
+    @GetMapping("/edit_product/{id}")
+    public String editProduct(Model model,
+                              @PathVariable Long id){
+        Optional<Product> product = productService.findById(id);
+        if(!product.isEmpty()){
+            model.addAttribute("product",product.get());
+            return "edit_product";
+        }else{
+            return "redirect:/products";
+        }
+    }
+
+    @PostMapping("/saveProduct")
+    public String saveProduct(@RequestParam Long id,
+                              @RequestParam String title,
+                              @RequestParam (defaultValue = "0") Integer price){
+
+        Product product = new Product();
+        if(id != null) {
+            product.setId(id);
+        }
+        product.setTitle(title);
+        product.setPrice(price);
+        productService.save(product);
+        return "redirect:/products";
     }
 
 }

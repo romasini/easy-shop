@@ -10,29 +10,64 @@
 <body>
 <div class = "container">
     <div th:replace="~{navigation :: navigation(Products)}" />
-    <h1>Список товаров</h1>
-    <span th:if="${productlist.isEmpty()}">Список товаров пуст</span>
-    <table class="table" th:if="${!productlist.isEmpty()}">
-        <thead>
-        <tr style="background-color:grey">
-            <td>ID</td>
-            <td>Title</td>
-            <td>Price</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="p : ${productlist}">
-            <td th:text = "${p.id}"/>
-            <td th:text = "${p.title}"/>
-            <td th:text = "${p.price}"/>
-        </tr>
-        </tbody>
-    </table>
+    <div class="prodList">
+        <h1>Список товаров</h1>
+        <h3 th:if="${products.isEmpty()}">Список товаров пуст</h3>
+        <table class="table table-bordered" th:if="${!products.isEmpty()}">
+            <thead>
+            <tr class="bg-primary">
+                <td>ID</td>
+                <td>Название</td>
+                <td>Цена</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${products}">
+                <td th:text = "${p.id}"/>
+                <td>
+                    <a th:text = "${p.title}" th:href="@{'/edit_product/' + ${p.id}}"/>
+                </td>
+                <td th:text = "${p.price}"/>
+            </tr>
+            </tbody>
+        </table>
 
-    <form class="filter" method="GET" th:action="@{/products}">
-        <input name="minPrice" type="number" placeholder="Цена От">
-        <input name="maxPrice" type="number" placeholder="Цена До">
-        <button class="btn btn-primary" type="submit">Фильтровать</button>
+        <nav aria-label="Page navigation" th:if="${!products.isEmpty()}">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/products?p=' + ${products.previousOrFirstPageable().getPageNumber() + 1} + ${filterDefinition}}">Назад</a>
+                </li>
+                <li class="page-item" th:classappend="${products.getNumber() + 1 == i ? 'active' :''}"
+                    th:each = "i : ${#numbers.sequence(1, products.getTotalPages())}">
+                        <a class="page-link" th:if="${i>= products.getNumber()-1 && i<=products.getNumber()+3}" th:text="${i}" th:href="@{'/products?p=' + ${i} + ${filterDefinition}}"></a>
+                </li>
+                <li class="page-item" th:classappend="${products.isLast() ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/products?p=' + ${products.nextOrLastPageable().getPageNumber() + 1} + ${filterDefinition}}">Вперед</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <form method="GET" th:action="@{/products}">
+        <div class="filter form-row align-items-center" >
+            <div class="col-auto">
+                <label for="titlePart" class="sr-only">Название</label>
+                <input th:value="${param.titlePart != null? param.titlePart : null}" name="titlePart" id="titlePart" type="text" class="form-control mb-2"  placeholder="Название">
+            </div>
+            <div class="col-auto">
+                <label for="minPriceInput" class="sr-only">Цена От</label>
+                <input th:value="${param.minPrice != null? param.minPrice : null}" name="minPrice" id="minPriceInput" type="number" class="form-control mb-2"  placeholder="Цена От">
+            </div>
+            <div class="col-auto">
+                <label for="maxPriceInput" class="sr-only">Цена До</label>
+                <input th:value="${param.maxPrice != null? param.maxPrice : null}" name="maxPrice"  id="maxPriceInput" type="number" class="form-control mb-2"  placeholder="Цена До">
+            </div>
+           <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-2">Фильтровать</button>
+           </div>
+            <div class="col-auto">
+                <a th:href="@{/products}" class="btn btn-primary mb-2">Очистить</a>
+            </div>
+        </div>
     </form>
 </div>
 </body>
