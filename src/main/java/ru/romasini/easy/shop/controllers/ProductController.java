@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.romasini.easy.shop.exceptions.ResourceNotFoundException;
 import ru.romasini.easy.shop.models.Product;
 import ru.romasini.easy.shop.sevices.ProductService;
 import ru.romasini.easy.shop.utils.ProductFilter;
@@ -37,26 +38,13 @@ public class ProductController {
     @GetMapping("/edit_product/{id}")
     public String editProduct(Model model,
                               @PathVariable Long id){
-        Optional<Product> product = productService.findById(id);
-        if(!product.isEmpty()){
-            model.addAttribute("product",product.get());
-            return "edit_product";
-        }else{
-            return "redirect:/products";
-        }
+        Product product = productService.findById(id).orElseThrow(()->new ResourceNotFoundException("Продукт не найден (для редактирования)"));
+        model.addAttribute("product",product);
+        return "edit_product";
     }
 
-    @PostMapping("/saveProduct")
-    public String saveProduct(@RequestParam Long id,
-                              @RequestParam String title,
-                              @RequestParam (defaultValue = "0") Integer price){
-
-        Product product = new Product();
-        if(id != null) {
-            product.setId(id);
-        }
-        product.setTitle(title);
-        product.setPrice(price);
+    @PostMapping("/save_product")
+    public String saveProduct(@ModelAttribute Product product){
         productService.save(product);
         return "redirect:/products";
     }
