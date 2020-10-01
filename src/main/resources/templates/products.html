@@ -19,6 +19,7 @@
                 <td>ID</td>
                 <td>Название</td>
                 <td>Цена</td>
+                <td>Действие</td>
             </tr>
             </thead>
             <tbody>
@@ -28,6 +29,9 @@
                     <a th:text = "${p.title}" th:href="@{'/edit_product/' + ${p.id}}"/>
                 </td>
                 <td th:text = "${p.price}"/>
+                <td>
+                    <a class="btn btn-success" th:href="@{'/cart/add/' + ${p.id}}">В корзину</a>
+                </td>
             </tr>
             </tbody>
         </table>

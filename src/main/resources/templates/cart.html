@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>Корзина</title>
+</head>
+<body>
+    <div class="container">
+        <div th:replace="~{navigation :: navigation(Cart)}" />
+        <h1>Корзина</h1>
+        <h3 th:if="${@cart.items.isEmpty()}">Корзина пуста</h3>
+        <table class="table table-bordered" th:if="${!@cart.items.isEmpty()}">
+            <thead>
+            <tr class="bg-primary">
+                <td>Название</td>
+                <td>Цена</td>
+                <td>Действие</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${@cart.items}">
+                <td th:text = "${p.title}"/>
+                <td th:text = "${p.price}"/>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

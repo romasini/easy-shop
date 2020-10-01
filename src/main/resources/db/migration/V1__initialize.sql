@@ -3,6 +3,20 @@ CREATE TABLE products (
     title VARCHAR(255) NOT NULL,
     price INT);
 
+CREATE TABLE orders (
+    id bigserial PRIMARY KEY,
+    customer_name VARCHAR(255) NOT NULL,
+    customer_phone VARCHAR(255) NOT NULL
+    customer_address VARCHAR(255) NOT NULL,
+     price INT);
+
+CREATE TABLE order_items (
+    id bigserial PRIMARY KEY,
+    product_id bigint NOT NULL REFERENCES products(id),
+    order_id bigint NOT NULL REFERENCES orders(id),
+    quantity INT,
+    price INT);
+
 INSERT INTO products (title, price)
 VALUES
 ('Prod 1', 100),
