@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>Заказы</title>
+</head>
+<body>
+    <div th:replace="~{navigation :: navigation(Orders)}" />
+    <div class="container">
+        <h3 th:if="${orders.isEmpty()}">Нет заказов</h3>
+        <table class="table table-bordered" th:if="${!orders.isEmpty()}">
+            <thead>
+            <tr class="bg-primary">
+                <td>ID</td>
+                <td>Клиент</td>
+                <td>Телефон</td>
+                <td>Адрес</td>
+                <td>Стоимость</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="o : ${orders}">
+                <td>
+                    <a th:text = "${o.id}" th:href="@{'/orders/' + ${o.id}}"/>
+                </td>
+                <td th:text = "${o.name}"/>
+                <td th:text = "${o.phone}"/>
+                <td th:text = "${o.address}"/>
+                <td th:text = "${o.price}"/>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation" th:if="${!orders.isEmpty()}">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${orders.isFirst() ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/orders?p=' + ${orders.previousOrFirstPageable().getPageNumber() + 1}}">Назад</a>
+                </li>
+                <li class="page-item" th:classappend="${orders.getNumber() + 1 == i ? 'active' :''}"
+                    th:each = "i : ${#numbers.sequence(orders.getNumber()-1<1?1:orders.getNumber()-1, orders.getNumber()+3>orders.getTotalPages()?orders.getTotalPages():orders.getNumber()+3)}">
+                    <a class="page-link" th:text="${i}" th:href="@{'/orders?p=' + ${i} }"></a>
+                </li>
+                <li class="page-item" th:classappend="${orders.isLast() ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{'/orders?p=' + ${orders.nextOrLastPageable().getPageNumber() + 1} }">Вперед</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

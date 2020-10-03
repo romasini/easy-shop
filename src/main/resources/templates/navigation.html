@@ -22,12 +22,12 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item" th:classappend="${activeTab == 'Cart' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/cart}">Корзина</a>
+                    <a class="nav-link" th:text="'Корзина ('+${@cart.items.size()}+')'" th:href="@{/cart}"/>
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <li class="nav-item" th:classappend="${activeTab == 'Order' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/order}">Заказ</a>
+                <li class="nav-item" th:classappend="${activeTab == 'Orders' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/orders}">Заказы</a>
                 </li>
             </ul>
         </div>

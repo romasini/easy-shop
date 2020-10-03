@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>Оформление заказа</title>
+</head>
+<body>
+    <div class="container">
+        <div th:replace="~{navigation :: navigation(Products)}" />
+
+        <form method="POST" class="orderForm"  th:action="@{/save_order}" th:object="${order}">
+            <div class="form-group">
+                <label for="orderName">ФИО</label>
+                <input type="text" class="form-control" id="orderName" th:field="*{name}" name="name">
+            </div>
+            <div class="form-group">
+                <label for="orderPhone">Контактный телефон</label>
+                <input type="text" class="form-control" id="orderPhone" th:field="*{phone}" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="orderAddress">Адрес доставки</label>
+                <input type="text" class="form-control" id="orderAddress" th:field="*{address}" name="address">
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr class="bg-primary">
+                    <td>Товар</td>
+                    <td>Количество</td>
+                    <td>Цена</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="oi : *{items}">
+                    <td th:text = "${oi.product.title}"/>
+                    <td th:text = "${oi.quantity}"/>
+                    <td th:text = "${oi.price}"/>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <label for="orderPrice">Цена</label>
+                <input type="number" class="form-control" readonly id="orderPrice" th:field="*{price}" name="price">
+            </div>
+            <button type="submit" class="btn btn-primary">Оформить</button>
+        </form>
+
+    </div>
+</body>
+</html>

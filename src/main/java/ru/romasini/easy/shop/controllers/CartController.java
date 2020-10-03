@@ -2,7 +2,6 @@ package ru.romasini.easy.shop.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,27 @@ public class CartController {
                       HttpServletRequest request,
                       HttpServletResponse response) throws IOException {
         Product product = productService.findById(productId).orElseThrow(()->new ResourceNotFoundException("Продукт не найден"));
-        cart.add(product);
+        cart.addOrIncrement(product);
         response.sendRedirect(request.getHeader("referer"));
     }
+
+    @GetMapping("/inc/{product_id}")
+    public String addOrIncrement(@PathVariable(name = "product_id") Long productId)  {
+        cart.increment(productId);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/dec/{product_id}")
+    public String decrementOrRemove(@PathVariable(name = "product_id") Long productId)  {
+        cart.decrementOrRemove(productId);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/remove/{product_id}")
+    public String remove(@PathVariable(name = "product_id") Long productId)  {
+        cart.remove(productId);
+        return "redirect:/cart";
+    }
+
+
 }

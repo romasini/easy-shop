@@ -29,4 +29,21 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    public OrderItem(Product product){
+        this.product = product;
+        this.quantity = 1;
+        this.price = product.getPrice();
+    }
+
+    public void incrementQuantity(){
+        quantity++;
+    }
+
+    public void decrementQuantity(){
+        quantity--;
+        if(quantity<=0){
+            quantity = 0;
+        }
+    }
 }

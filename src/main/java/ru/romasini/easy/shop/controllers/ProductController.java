@@ -10,7 +10,6 @@ import ru.romasini.easy.shop.sevices.ProductService;
 import ru.romasini.easy.shop.utils.ProductFilter;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
