@@ -20,6 +20,16 @@
                     <a class="nav-link" th:href="@{/products}">Товары</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item" th:classappend="${activeTab == 'Cart' ? 'active' : ''}">
+                    <a class="nav-link" th:text="'Корзина ('+${@cart.items.size()}+')'" th:href="@{/cart}"/>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item" th:classappend="${activeTab == 'Orders' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/orders}">Заказы</a>
+                </li>
+            </ul>
         </div>
     </nav>
 </div>

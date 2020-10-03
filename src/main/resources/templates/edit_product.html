@@ -11,7 +11,7 @@
     <div class="container">
         <div th:replace="~{navigation :: navigation(Products)}" />
 
-        <form method="POST" class="product" th:action="@{/saveProduct}" th:object="${product}">
+        <form method="POST" class="product" th:action="@{/save_product}" th:object="${product}">
             <div class="form-group">
                 <label for="productId">ID</label>
                 <input type="text" class="form-control" readonly id="productId" th:field="*{id}" name="id">
