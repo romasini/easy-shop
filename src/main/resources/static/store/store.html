@@ -18,20 +18,19 @@
             </tbody>
         </table>
 
-<!--        <nav aria-label="Page navigation">-->
-<!--            <ul class="pagination">-->
-<!--                <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">-->
-<!--                    <a class="page-link" th:href="@{'/products?p=' + ${products.previousOrFirstPageable().getPageNumber() + 1} + ${filterDefinition}}">Назад</a>-->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item" ng-disabled="Products.first">
+                    <a class="page-link" ng-click="backPage()">Назад</a>
+                </li>
+<!--                <li class="page-item" ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="(index + 1)">-->
+<!--                    <a class="page-link" ng-click="inPage(i)">{{i}}</a>-->
 <!--                </li>-->
-<!--                <li class="page-item" th:classappend="${products.getNumber() + 1 == i ? 'active' :''}"-->
-<!--                    th:each = "i : ${#numbers.sequence(products.getNumber()-1<1?1:products.getNumber()-1, products.getNumber()+3>products.getTotalPages()?products.getTotalPages():products.getNumber()+3)}">-->
-<!--                    <a class="page-link" th:text="${i}" th:href="@{'/products?p=' + ${i} + ${filterDefinition}}"></a>-->
-<!--                </li>-->
-<!--                <li class="page-item" th:classappend="${products.isLast() ? 'disabled' : ''}">-->
-<!--                    <a class="page-link" th:href="@{'/products?p=' + ${products.nextOrLastPageable().getPageNumber() + 1} + ${filterDefinition}}">Вперед</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </nav>-->
+                <li class="page-item" ng-disabled="Products.last">
+                    <a class="page-link" ng-click="forwardPage()">Вперед</a>
+                </li>
+            </ul>
+        </nav>
 
     <form  novalidate ng-submit="applyFilter()" >
         <div class="filter form-row align-items-center" >
