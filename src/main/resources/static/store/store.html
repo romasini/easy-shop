@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="p in Products.content">
+                <tr ng-repeat="p in ProductsPage.content">
                     <td>{{p.id}}</td>
                     <td>{{p.title}}</td>
                     <td>{{p.price}}</td>
@@ -20,19 +20,19 @@
 
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                <li class="page-item" ng-disabled="Products.first">
-                    <a class="page-link" ng-click="backPage()">Назад</a>
+                <li class="page-item" ng-disabled="ProductsPage.first">
+                    <a class="page-link" ng-click="fillTable(ProductsPage.number>0 ? ProductsPage.number : 1)">Назад</a>
                 </li>
-<!--                <li class="page-item" ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="(index + 1)">-->
-<!--                    <a class="page-link" ng-click="inPage(i)">{{i}}</a>-->
-<!--                </li>-->
-                <li class="page-item" ng-disabled="Products.last">
-                    <a class="page-link" ng-click="forwardPage()">Вперед</a>
+                <li class="page-item" ng-repeat = "i in PaginationArray">
+                    <a class="page-link" ng-click="fillTable(i)">{{i}}</a>
+                </li>
+                <li class="page-item" ng-disabled="ProductsPage.last">
+                    <a class="page-link" ng-click="fillTable(ProductsPage.number+2<ProductsPage.totalPages ? ProductsPage.number+2 : ProductsPage.totalPages)">Вперед</a>
                 </li>
             </ul>
         </nav>
 
-    <form  novalidate ng-submit="applyFilter()" >
+    <form  novalidate ng-submit="fillTable()" >
         <div class="filter form-row align-items-center" >
             <div class="col-auto">
                 <label for="titlePart" class="sr-only">Название</label>
