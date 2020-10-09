@@ -34,4 +34,8 @@ public class Order {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<OrderItem> items;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

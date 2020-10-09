@@ -10,7 +10,7 @@ CREATE TABLE roles (
 
 CREATE TABLE users (
     id bigserial PRIMARY KEY,
-    username VARCHAR(100) NOT NULL,
+    username VARCHAR(30) NOT NULL,
     password VARCHAR(80) NOT NULL,
     email    VARCHAR(50) UNIQUE
 );
