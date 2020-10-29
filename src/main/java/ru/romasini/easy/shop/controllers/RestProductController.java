@@ -2,7 +2,6 @@ package ru.romasini.easy.shop.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 import ru.romasini.easy.shop.exceptions.ResourceNotFoundException;
 import ru.romasini.easy.shop.models.Product;

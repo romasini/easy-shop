@@ -3,8 +3,27 @@ CREATE TABLE products (
     title VARCHAR(255) NOT NULL,
     price INT);
 
+CREATE TABLE roles (
+    id serial PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE users (
+    id bigserial PRIMARY KEY,
+    username VARCHAR(30) NOT NULL,
+    password VARCHAR(80) NOT NULL,
+    email    VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE users_roles(
+    user_id bigint NOT NULL REFERENCES users(id),
+    role_id int NOT NULL REFERENCES roles(id),
+    PRIMARY KEY(user_id, role_id)
+);
+
 CREATE TABLE orders (
     id bigserial PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users(id),
     customer_name VARCHAR(255),
     customer_phone VARCHAR(255),
     customer_address VARCHAR(255) ,
@@ -16,6 +35,22 @@ CREATE TABLE order_items (
     order_id bigint REFERENCES orders(id),
     quantity INT,
     price INT);
+
+INSERT INTO roles(name)
+VALUES
+('ROLE_ADMIN'),
+('ROLE_MANAGER'),
+('ROLE_CUSTOMER');
+
+INSERT INTO users (username, password, email)
+VALUES
+('admin','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'admin@market.ru'),
+('manager1','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'manager1@market.ru');
+
+INSERT INTO users_roles(user_id, role_id)
+VALUES
+(1,1),
+(2,2);
 
 INSERT INTO products (title, price)
 VALUES

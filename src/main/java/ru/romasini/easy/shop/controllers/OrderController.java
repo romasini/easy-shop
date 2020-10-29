@@ -6,8 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.romasini.easy.shop.exceptions.ResourceNotFoundException;
 import ru.romasini.easy.shop.models.Order;
+import ru.romasini.easy.shop.models.User;
 import ru.romasini.easy.shop.sevices.OrderService;
+import ru.romasini.easy.shop.sevices.UserService;
 import ru.romasini.easy.shop.utils.Cart;
+
+import java.security.Principal;
 
 
 @Controller
@@ -18,6 +22,7 @@ public class OrderController {
 
     private OrderService orderService;
     private Cart cart;
+    private UserService userService;
 
     @GetMapping("/order_complete")
     public String orderComplete1(Model model){
@@ -29,8 +34,10 @@ public class OrderController {
     }
 
     @PostMapping("/save_order")
-    public String saveOrder(Model model, @ModelAttribute Order order){
+    public String saveOrder(Model model, @ModelAttribute Order order, Principal principal){
         order.setItems(cart.getItems());
+        User user = userService.findByUsername(principal.getName());
+        order.setUser(user);
         orderService.save(order);
         cart.setAmount(0);
         cart.init();
@@ -38,13 +45,14 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public String ordersList(Model model, @RequestParam(name = "p", required = false, defaultValue = "1") Integer numPage){
+    public String ordersList(Model model, @RequestParam(name = "p", required = false, defaultValue = "1") Integer numPage, Principal principal){
 
         if(numPage <= 0){
             numPage = 1;
         }
-
-        model.addAttribute("orders", orderService.findAll(numPage-1, PAGE_SIZE));
+        User user = userService.findByUsername(principal.getName());
+        //model.addAttribute("orders", orderService.findAll(numPage-1, PAGE_SIZE));
+        model.addAttribute("orders", orderService.findAllByUser(user, numPage-1, PAGE_SIZE));
         return "orders";
     }
 

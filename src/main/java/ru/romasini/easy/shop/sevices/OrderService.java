@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.romasini.easy.shop.models.Order;
 import ru.romasini.easy.shop.models.OrderItem;
+import ru.romasini.easy.shop.models.User;
 import ru.romasini.easy.shop.repositories.OrderRepository;
 
 import java.util.Optional;
@@ -18,6 +19,10 @@ public class OrderService {
 
     public Page<Order> findAll(Integer numPage, int sizePage){
         return orderRepository.findAll(PageRequest.of(numPage, sizePage));
+    }
+
+    public Page<Order> findAllByUser(User user, Integer numPage, int sizePage){
+        return orderRepository.findAllByUser(user, PageRequest.of(numPage, sizePage));
     }
 
     public Optional<Order> findById(Long id){
